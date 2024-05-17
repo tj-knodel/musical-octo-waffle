@@ -49,11 +49,15 @@ function Spaceship:draw()
 	if self.isSelected then
 		draw_selected(self.x, self.y)
 	end
+	love.graphics.push()
+	love.graphics.rotate(math.rad(-45))
+	love.graphics.scale(1, 2)
 	love.graphics.draw(frames[math.floor(self.rotation)],
 						self.x, self.y,
 						0,
 						1, 1,
 						self.origin_x, self.origin_y)
+	love.graphics.pop()
 end
 
 -- draw an isometric grid square around the object
@@ -63,8 +67,8 @@ function draw_selected(x, y)
 	love.graphics.translate(x, y)
 	-- math.rad(35.264)
 	-- This works for now? Figure out how to generate a ton of squares
-	love.graphics.scale(1, 0.5)
-	love.graphics.rotate(math.rad(45))
+	--love.graphics.scale(1, 0.5)
+	--love.graphics.rotate(math.rad(45))
 	love.graphics.translate(-40, -40)
 	love.graphics.rectangle("line", 0, 0, 80, 80)
 	love.graphics.setColor( 1, 1, 1 )

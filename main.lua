@@ -14,7 +14,7 @@ function love.load()
 	love.graphics.setDefaultFilter("nearest","nearest")
 	require "libs.spaceship"
 	
-	spaceship = Spaceship(400, 100)
+	spaceship = Spaceship(0, 0)
 	
 	-- we can move the camera with mouse movement
 	camera_x, camera_y = 0, 0
@@ -41,13 +41,13 @@ function love.update(dt)
 	local x, y = love.mouse.getPosition()
 	if x < mouse_margin and x > 0 then
 		camera_x = camera_x + camera_speed * dt
-	elseif (x < windowWidth) and (x > windowWidth - mouse_margin) then
+	elseif (x < windowWidth) and (x > windowWidth - mouse_margin + 1) then
 		camera_x = camera_x - camera_speed * dt
 	end
 	
 	if y < mouse_margin and y > 0 then
 		camera_y = camera_y + camera_speed * dt
-	elseif y > windowHeight - mouse_margin then
+	elseif y > windowHeight - mouse_margin + 1 then
 		camera_y = camera_y - camera_speed * dt
 	end
 
@@ -84,11 +84,18 @@ function love.update(dt)
 end
 
 function love.draw()
+	-- new approach: draw the entire grid non-isometrically. this includes
+	-- all the non-tile objects (like the ship)
+	-- then, rotate everything by 45 degrees and scale everything by y = 0.5
 	push:start()
 	
 	love.graphics.translate(camera_x, camera_y)
 	draw_grid()
+	love.graphics.push()
+	--love.graphics.scale(1, 2)
+	--love.graphics.rotate(math.rad(45))
 	spaceship:draw()
+	love.graphics.pop()
 	
 	push:finish()
 end
@@ -97,8 +104,6 @@ function draw_grid()
 	-- draw a normal size grid
 	love.graphics.push()
 	love.graphics.setColor( 0, 1, 1, 0.5 )
-	love.graphics.scale(1, 0.5)
-	love.graphics.rotate(math.rad(45))
 	
 	for i=0,(mapWidth/80) do
 		for j=0,(mapHeight/80) do
@@ -109,20 +114,7 @@ function draw_grid()
 			love.graphics.pop()
 		end
 	end
+	love.graphics.translate(0, -mapHeight / 2)
 	love.graphics.setColor( 1, 1, 1, 1 )
 	love.graphics.pop()
-	--love.graphics.rotate(math.rad(45))
-	--[[
-	for i=0,(gameWidth/80) do
-		love.graphics.push()
-		love.graphics.translate(120 * i, 80)
-		-- math.rad(35.264)
-		-- This works for now? Figure out how to generate a ton of squares
-		love.graphics.scale(1, 0.5)
-		love.graphics.rotate(math.rad(45))
-		love.graphics.translate(-40, -40)
-		love.graphics.rectangle("line", 0, 0, 80, 80)
-		love.graphics.pop()
-	end
-	]]--
 end
