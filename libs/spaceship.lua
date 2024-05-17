@@ -46,14 +46,16 @@ function Spaceship:update(dt)
 end
 
 function Spaceship:draw()
+	
 	if self.isSelected then
 		draw_selected(self.x, self.y)
 	end
 	love.graphics.push()
+	love.graphics.translate(self.x,self.y)
 	love.graphics.rotate(math.rad(-45))
 	love.graphics.scale(1, 2)
 	love.graphics.draw(frames[math.floor(self.rotation)],
-						self.x, self.y,
+						0, 0,
 						0,
 						1, 1,
 						self.origin_x, self.origin_y)

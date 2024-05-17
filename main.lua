@@ -14,7 +14,7 @@ function love.load()
 	love.graphics.setDefaultFilter("nearest","nearest")
 	require "libs.spaceship"
 	
-	spaceship = Spaceship(0, 0)
+	spaceship = Spaceship(160, 0)
 	
 	-- we can move the camera with mouse movement
 	camera_x, camera_y = 0, 0
@@ -72,15 +72,6 @@ function love.update(dt)
 		spaceship.rotation = 7
 	end
 	spaceship:update(dt)
-	--[[
-	if love.keyboard.isDown("left") then
-		spaceship.rotation = spaceship.rotation + 1
-		spaceship:update(dt)
-	elseif love.keyboard.isDown("right") then
-		spaceship.rotation = spaceship.rotation - 1
-		spaceship:update(dt)
-	end
-	]]--
 end
 
 function love.draw()
@@ -90,10 +81,12 @@ function love.draw()
 	push:start()
 	
 	love.graphics.translate(camera_x, camera_y)
-	draw_grid()
 	love.graphics.push()
-	--love.graphics.scale(1, 2)
-	--love.graphics.rotate(math.rad(45))
+	--love.graphics.translate(gameWidth/2, gameHeight/2)
+	love.graphics.scale(1, 0.5)
+	love.graphics.rotate(math.rad(45))
+	draw_grid()
+	
 	spaceship:draw()
 	love.graphics.pop()
 	
